@@ -2,14 +2,13 @@
 <html lang="ja">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>感謝ゲーム</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
 <body class="bg-gradient-to-r from-pink-200 via-red-100 to-yellow-100 min-h-screen flex items-center justify-center">
-
     <div x-data="thankGame()" class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-lg text-center">
         <h1 class="text-4xl font-bold text-pink-600 mb-6">🙏 感謝ゲーム ❤️</h1>
 
@@ -49,16 +48,9 @@
     <script>
         function thankGame() {
             return {
-                total: {
-                    {
-                        $total
-                    }
-                }, // ✅ Blade変数をそのまま埋め込む
-                today: {
-                    {
-                        $today
-                    }
-                }, // ✅ 修正済み
+                // 数値として初期化（@json は安全にJSへ埋め込むため）
+                total: @json($total),
+                today: @json($today),
                 hearts: [],
                 async sendThanks() {
                     // ハート生成
@@ -75,16 +67,17 @@
                         headers: {
                             "Content-Type": "application/json",
                             "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                        }
+                        },
+                        // body が不要なら省略でOK（必要なら JSON を送る）
+                        // body: JSON.stringify({})
                     });
                     const data = await res.json();
                     this.total = data.total;
                     this.today = data.today;
                 }
-            }
+            };
         }
     </script>
-
 </body>
 
 </html>
