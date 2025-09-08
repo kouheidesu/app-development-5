@@ -15,7 +15,7 @@ class ThankController extends Controller
         $total = Thank::count();
         $today = Thank::whereDate('created_at', Carbon::today())->count();
 
-        // ランキング（直近100件から上位ユーザー集計）
+        // ランキング（　直近100件から上位ユーザー集計）
         $ranking = Thank::select('user', DB::raw('COUNT(*) as count'))
             ->groupBy('user')
             ->orderByDesc('count')
