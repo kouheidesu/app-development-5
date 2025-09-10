@@ -9,7 +9,9 @@
 </head>
 
 <body class="bg-gradient-to-r from-pink-200 via-red-100 to-yellow-100 min-h-screen flex items-center justify-center">
-    <div x-data="thankGame()" class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-lg text-center">
+    <div
+        x-data="thankGame({{ Js::from(['total' => $total, 'today' => $today]) }})"
+        class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-lg text-center">
         <h1 class="text-4xl font-bold text-pink-600 mb-6">🙏 感謝ゲーム ❤️</h1>
 
         <!-- 感謝ボタン -->
@@ -22,7 +24,8 @@
 
             <!-- ハートアニメーション -->
             <template x-for="(heart, index) in hearts" :key="index">
-                <span x-text="heart.icon"
+                <span
+                    x-text="heart.icon"
                     class="absolute text-red-500 text-3xl animate-bounce"
                     :style="`top:${heart.top}px; left:${heart.left}px;`"></span>
             </template>
@@ -38,7 +41,7 @@
         <div class="mt-8">
             <h2 class="text-2xl font-semibold text-pink-500 mb-4">ランキング</h2>
             <ul class="space-y-1 text-gray-700">
-                @foreach($ranking as $r)
+                @foreach ($ranking as $r)
                 <li>🙇 {{ $r->user ?? '匿名' }}：{{ $r->count }}回</li>
                 @endforeach
             </ul>
@@ -46,12 +49,13 @@
     </div>
 
     <script>
-        function thankGame() {
+        function thankGame(boot) {
             return {
-                // 数値として初期化（@json は安全にJSへ埋め込むため）
-                total: @json($total),
-                today: @json($today),
+                // 初期値は Blade → JS に安全に埋め込み済み
+                total: boot.total,
+                today: boot.today,
                 hearts: [],
+
                 async sendThanks() {
                     // ハート生成
                     this.hearts.push({
@@ -67,10 +71,11 @@
                         headers: {
                             "Content-Type": "application/json",
                             "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                        },
-                        // body が不要なら省略でOK（必要なら JSON を送る）
+                        }
+                        // body が不要なら省略
                         // body: JSON.stringify({})
                     });
+
                     const data = await res.json();
                     this.total = data.total;
                     this.today = data.today;
