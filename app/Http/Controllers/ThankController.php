@@ -22,7 +22,7 @@ class ThankController extends Controller
             ->limit(5)
             ->get();
 
-        return view('thanks.index', compact('total', 'today', 'ranking'));
+        return view('index', compact('total', 'today', 'ranking'));
     }
 
     public function increment(Request $request)
