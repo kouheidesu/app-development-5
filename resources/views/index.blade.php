@@ -11,6 +11,7 @@
 </head>
 
 <body class="bg-gradient-to-r from-pink-200 via-red-100 to-yellow-100 min-h-screen flex items-center justify-center">
+    <!-- totalとtoday変数に入れる -->
     <div
         x-data="thankGame({{ Js::from(['total' => $total, 'today' => $today]) }})"
         class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-lg text-center">
@@ -54,6 +55,7 @@
         function thankGame(boot) {
             return {
                 // 初期値は Blade → JS に安全に埋め込み済み
+                // 辞書型でプロパティを設定している？
                 total: boot.total,
                 today: boot.today,
                 hearts: [],
