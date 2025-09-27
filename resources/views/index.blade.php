@@ -3,27 +3,27 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" contenxt="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>感謝ゲーム</title>
     <script src="https://cdn.tailwindcss.com"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="bg-gradient-to-r from-pink-200 via-red-100 to-yellow-100 min-h-screen flex items-center justify-center px-4">
+
+    <!-- 白いカード -->
     <div
         x-data="thankGame({{ Js::from(['total' => $total, 'today' => $today]) }})"
-        class="bg-white p-4 sm:p-8 rounded-2xl shadow-2xl w-full max-w-md text-center">
+        class="bg-white shadow-xl rounded-2xl p-4 sm:p-8 w-full max-w-md text-center transition-all duration-300">
 
         <!-- タイトル -->
-        <h1 class="text-2xl sm:text-4xl font-bold text-pink-600 mb-6">
-            🙏 感謝ゲーム ❤️
-        </h1>
+        <h1 class="text-2xl sm:text-3xl font-bold text-pink-600 mb-6">🙏 感謝ゲーム ❤️</h1>
 
         <!-- 感謝ボタン -->
         <div class="relative mb-6">
             <button
                 @click="sendThanks"
-                class="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-pink-500 text-white text-lg sm:text-xl font-semibold rounded-full shadow-lg hover:bg-pink-600 transition">
+                class="w-full sm:w-auto bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300">
                 ❤️ 感謝
             </button>
 
@@ -31,19 +31,15 @@
             <template x-for="(heart, index) in hearts" :key="index">
                 <span
                     x-text="heart.icon"
-                    class="absolute text-red-500 text-3xl sm:text-4xl animate-bounce"
+                    class="absolute text-red-500 text-3xl animate-bounce"
                     :style="`top:${heart.top}px; left:${heart.left}px;`"></span>
             </template>
         </div>
 
         <!-- スコア表示 -->
         <div class="mt-6 space-y-2">
-            <p class="text-lg sm:text-xl text-gray-800">
-                今日の感謝: <span x-text="today"></span> 回
-            </p>
-            <p class="text-base sm:text-lg text-gray-600">
-                総合: <span x-text="total"></span> 回
-            </p>
+            <p class="text-lg sm:text-xl text-gray-800">今日の感謝: <span x-text="today"></span> 回</p>
+            <p class="text-base sm:text-lg text-gray-600">総合: <span x-text="total"></span> 回</p>
         </div>
 
         <!-- ランキング -->
