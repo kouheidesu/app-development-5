@@ -2,20 +2,20 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Middleware\TrustProxies as Middleware;
+use Illuminate\Http\Request;
 
 class TrustProxies extends Middleware
 {
     /**
-     * 信頼するプロキシ
+     * The trusted proxies for this application.
      *
      * @var array<int, string>|string|null
      */
-    protected $proxies = '*'; // すべてのプロキシを信頼
+    protected $proxies = '*';
 
     /**
-     * プロキシ検出に使うヘッダー
+     * The headers that should be used to detect proxies.
      *
      * @var int
      */
@@ -23,5 +23,5 @@ class TrustProxies extends Middleware
     Request::HEADER_X_FORWARDED_FOR |
         Request::HEADER_X_FORWARDED_HOST |
         Request::HEADER_X_FORWARDED_PORT |
-        Request::HEADER_X_FORWARDED_PROTO; // HTTPS 判定を有効化
+        Request::HEADER_X_FORWARDED_PROTO;
 }

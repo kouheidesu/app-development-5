@@ -19,10 +19,19 @@
     <!-- 白いカード -->
     <div
         x-data="thankGame({{ Js::from(['total' => $total, 'today' => $today]) }})"
+        x-init="init()"
         class="bg-white shadow-xl rounded-2xl p-4 sm:p-8 w-full max-w-md text-center transition-all duration-300">
 
         <!-- タイトル -->
         <h1 class="text-2xl sm:text-3xl font-bold text-pink-600 mb-6">🙏 感謝ゲーム ❤️</h1>
+
+        <!-- 名前入力 -->
+        <div class="mb-4 text-left">
+            <label class="block text-sm font-medium text-gray-700 mb-1">あなたの名前（任意・ランキング表示用）</label>
+            <input type="text" x-model="userName" placeholder="匿名"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400" />
+            <p class="text-xs text-gray-500 mt-1">未入力の場合は匿名またはIPで記録されます。</p>
+        </div>
 
         <!-- 感謝ボタン -->
         <div class="relative mb-6">
@@ -64,6 +73,13 @@
                 total: boot.total,
                 today: boot.today,
                 hearts: [],
+                userName: '',
+                init() {
+                    // 名前をローカル保存して復元
+                    const saved = localStorage.getItem('thankUserName');
+                    if (saved) this.userName = saved;
+                    this.$watch('userName', (v) => localStorage.setItem('thankUserName', v || ''));
+                },
                 async sendThanks() {
                     this.hearts.push({
                         icon: "❤️",
@@ -78,7 +94,8 @@
                             headers: {
                                 "Content-Type": "application/json",
                                 "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                            }
+                            },
+                            body: JSON.stringify({ user: this.userName?.trim() || null })
                         });
 
                         if (!res.ok) {

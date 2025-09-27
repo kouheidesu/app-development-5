@@ -27,7 +27,14 @@ class ThankController extends Controller
 
     public function increment(Request $request)
     {
-        $user = $request->ip(); // 簡易的にIPをユーザー識別に
+        // 入力バリデーション（任意のユーザー名）
+        $data = $request->validate([
+            'user' => ['nullable', 'string', 'max:50'],
+        ]);
+
+        $user = $data['user'] ?? null;
+        $user = $user !== null && trim($user) !== '' ? trim($user) : $request->ip(); // 簡易的に未入力はIPにフォールバック
+
         Thank::create(['user' => $user]);
 
         $total = Thank::count();
