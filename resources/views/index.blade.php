@@ -9,6 +9,11 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
+<script>
+    console.log("increment route: {{ route('thanks.increment') }}");
+</script>
+
+
 <body class="bg-gradient-to-r from-pink-200 via-red-100 to-yellow-100 min-h-screen flex items-center justify-center px-4">
 
     <!-- 白いカード -->
